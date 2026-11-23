@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0b1020" />
+<title>Tape-rupi 2.0 — Quiz Nhandewa</title>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="bg-orbs" aria-hidden="true">
+  <span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span>
+</div>
+
+<main id="app" class="app-shell">
+
+  <!-- ===== TELA INICIAL ===== -->
+  <section id="screen-start" class="screen is-active">
+    <div class="glass panel">
+      <header class="brand">
+        <div class="brand-badge">TR</div>
+        <div>
+          <h1>Tape-rupi <span class="v">2.0</span></h1>
+          <p class="sub">Quiz da língua Nhandewa-Guarani</p>
+        </div>
+      </header>
+
+      <p id="greeting" class="greeting"></p>
+
+      <h2 class="section-title">Escolha seu avatar</h2>
+      <div class="avatar-row" role="radiogroup" aria-label="Selecionar avatar">
+        <button class="avatar-card" data-avatar="konomi" role="radio" aria-checked="false">
+          <span class="avatar-emoji">🧑‍🦱</span>
+          <span class="avatar-name">Konomĩ</span>
+          <span class="avatar-desc">rapaz</span>
+        </button>
+        <button class="avatar-card" data-avatar="kunhatai" role="radio" aria-checked="false">
+          <span class="avatar-emoji">👩‍🦱</span>
+          <span class="avatar-name">Kunhataĩ</span>
+          <span class="avatar-desc">moça</span>
+        </button>
+      </div>
+
+      <div id="intro-text" class="intro">
+        <p>Porãeté! Você vai caminhar pelo <strong>tape-rupi</strong>, o caminho da língua.
+        São <strong>vinte fases</strong>: começa pelo alfabeto, passa pelos bichos e pelas cores,
+        atravessa o corpo, a família e a natureza, chega na gramática — conjugação,
+        pronomes, causativos, negação — e termina com frases inteiras. Cada fase
+        concluída desbloqueia a próxima e rende uma medalha.</p>
+      </div>
+
+      <button id="btn-start" class="btn btn-primary" disabled>
+        Começar o caminho
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== SELEÇÃO DE FASES ===== -->
+  <section id="screen-phases" class="screen">
+    <div class="glass panel">
+      <header class="topbar">
+        <button class="btn btn-ghost btn-icon" data-go="start" aria-label="Voltar">←</button>
+        <h2 class="topbar-title">Fases</h2>
+        <div class="score-pill" id="total-score-pill">0 pts</div>
+      </header>
+      <div class="phase-progress" id="phase-progress">
+        <div class="phase-progress-fill" id="phase-progress-fill"></div>
+      </div>
+      <div id="phase-list" class="phase-grid"></div>
+    </div>
+  </section>
+
+  <!-- ===== FASE 1: ALFABETO (apresentação) ===== -->
+  <section id="screen-alphabet" class="screen">
+    <div class="glass panel">
+      <header class="topbar">
+        <button class="btn btn-ghost btn-icon" data-go="phases" aria-label="Voltar">←</button>
+        <h2 class="topbar-title">Fase 1 · Alfabeto Tupi</h2>
+        <span class="progress-pill" id="alpha-progress">1/21</span>
+      </header>
+
+      <div class="alpha-stage">
+        <div class="alpha-letter" id="alpha-letter">a</div>
+        <div class="alpha-visual" id="alpha-visual">
+          <span class="alpha-emoji" id="alpha-emoji">🌽</span>
+          <img id="alpha-img" alt="" />
+        </div>
+        <div class="alpha-word">
+          <strong id="alpha-word">awá</strong>
+          <span id="alpha-translation">pessoa / homem</span>
+        </div>
+      </div>
+
+      <div class="alpha-bar" id="alpha-bar" role="progressbar" aria-valuemin="0"></div>
+
+      <div class="row gap-12">
+        <button id="btn-alpha-prev" class="btn btn-ghost">← Anterior</button>
+        <button id="btn-alpha-restart" class="btn btn-ghost">Recomeçar</button>
+        <button id="btn-alpha-next" class="btn btn-primary">Próximo →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUIZ (fases 2 a 20) ===== -->
+  <section id="screen-quiz" class="screen">
+    <div class="glass panel">
+      <header class="topbar">
+        <button class="btn btn-ghost btn-icon" id="btn-quit-quiz" aria-label="Sair">←</button>
+        <h2 class="topbar-title" id="quiz-title">Fase</h2>
+        <span class="progress-pill" id="quiz-progress">1/10</span>
+      </header>
+
+      <div class="quiz-hud">
+        <div class="hud-item">
+          <span class="hud-label">Acertos</span>
+          <strong id="hud-hits">0</strong>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Combo</span>
+          <strong id="hud-combo">×0</strong>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Pontos</span>
+          <strong id="hud-points">0</strong>
+        </div>
+      </div>
+
+      <div id="quiz-npc" class="npc-bubble">
+        <span class="npc-avatar">🧑‍🦱</span>
+        <p class="npc-text" id="npc-text">Ko’ẽporã!</p>
+      </div>
+
+      <div class="quiz-question" id="quiz-question">
+        <span class="q-kicker" id="q-kicker">Como se diz…</span>
+        <h3 class="q-text" id="q-text">Carregando…</h3>
+      </div>
+
+      <div class="options" id="options"></div>
+
+      <div id="feedback" class="feedback" aria-live="polite"></div>
+
+      <div class="row">
+        <button id="btn-next-q" class="btn btn-primary" hidden>Próxima →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RESULTADO / MEDALHA ===== -->
+  <section id="screen-result" class="screen">
+    <div class="glass panel result-panel">
+      <div class="medal" id="medal-emoji">🥇</div>
+      <h2 class="result-title" id="result-title">Porãeté!</h2>
+      <p class="result-sub" id="result-sub">Você concluiu a fase!</p>
+
+      <div class="result-stats">
+        <div><span>Acertos</span><strong id="r-hits">0</strong></div>
+        <div><span>Total</span><strong id="r-total">0</strong></div>
+        <div><span>Pontos</span><strong id="r-points">0</strong></div>
+        <div><span>Aproveitamento</span><strong id="r-pct">0%</strong></div>
+      </div>
+
+      <div class="row gap-12">
+        <button class="btn btn-ghost" data-go="phases">Voltar ao início</button>
+        <button id="btn-replay" class="btn btn-ghost">Jogar de novo</button>
+        <button id="btn-next-phase" class="btn btn-primary" hidden>Seguir próxima fase →</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script type="module" src="game.js"></script>
+</body>
+</html>
